@@ -1,0 +1,49 @@
+echo "Launching container for PostgreSQL ${major_version:?not set}"
+
+## Variables
+##
+## Declare any of these at the beginning of a top-level script, before including
+## this file, to override the default values.
+##
+password_file=${password_file:-.postgres_password}
+volume_name=${volume_name:-postgres_data}
+container_name=${container_name:-postgresql_server_${major_version}}
+image_name=${image_name:-postgres:${major_version}-alpine}
+pgdata_location=${pgdata_location:-pg-${major_version}}
+local_port=${local_port:-${major_version}032}
+
+## Functions
+##
+## The primary function to be called from top-level scripts is 'do_it'.
+##
+function create_volume() {
+  echo Docker volume "$volume_name" not found. Creating...
+  docker volume create --driver local --name $volume_name
+}
+
+function run_container() {
+  echo Docker container "$container_name" not found. Running...
+  postgres_password="$(cat $password_file)"
+  docker run --name $container_name -e POSTGRES_PASSWORD=$postgres_password -e PGDATA=/var/lib/postgresql/data/$pgdata_location -v $volume_name:/var/lib/postgresql/data -p 127.0.0.1:$local_port:5432 -d $image_name
+}
+
+function start_container() {
+  echo Starting...
+  docker start $container_name
+}
+
+function do_it() {
+    container_id=$(docker ps --all --filter "name=$container_name" --format "{{.ID}}")
+    docker volume ls --quiet | grep --quiet $volume_name
+    if [ "$?" -eq "1" ]
+    then
+      create_volume
+    fi
+
+    if [ -z "$container_id" ]
+    then
+      run_container
+    else
+      start_container
+    fi
+}
