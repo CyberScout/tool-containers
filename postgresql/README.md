@@ -1,7 +1,7 @@
+<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL logo" width="128">
+
 PostgreSQL Server
 =================
-
-<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL logo" width="64">
 
 This set of scripts launches PostgreSQL Server within a Docker container. Two versions are currently supported -- 10 and 11.
 
