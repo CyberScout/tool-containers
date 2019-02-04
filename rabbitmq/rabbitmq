@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+docker run -d --hostname local-rabbit --name rabbitmq_server -v $SCRIPTPATH/enabled_plugins:/etc/rabbitmq/enabled_plugins -p 127.0.0.1:15672:15672 -p 127.0.0.1:5672:5672 rabbitmq:3-management-alpine

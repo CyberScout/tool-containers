@@ -1,0 +1,34 @@
+#!/bin/bash
+
+container_name=postgresql_server_10
+volume_name=postgres_data
+
+function create_volume() {
+  echo Docker volume "$volume_name" not found. Creating...
+  docker volume create --driver local --name $volume_name
+}
+
+function run_container() {
+  echo Docker container "$container_name" not found. Running...
+  postgres_password="$(cat .postgres_password)"
+  docker run --name $container_name -e POSTGRES_PASSWORD=$postgres_password -e PGDATA=/var/lib/postgresql/data/pg-10 -v $volume_name:/var/lib/postgresql/data -p 127.0.0.1:10032:5432 -d postgres:10-alpine
+}
+
+function start_container() {
+  echo Starting...
+  docker start $container_name
+}
+
+container_id=$(docker ps --all --filter "name=$container_name" --format "{{.ID}}")
+docker volume ls --quiet | grep $volume_name
+if [ "$?" -eq "1" ]
+then
+  create_volume
+fi
+
+if [ -z "$container_id" ]
+then
+  run_container
+else
+  start_container
+fi
