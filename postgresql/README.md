@@ -1,21 +1,21 @@
-<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL logo" width="128">
+![PostgreSQL logo](elephant128.png)
 
-PostgreSQL Server
-=================
+# PostgreSQL Server
 
-This set of scripts launches PostgreSQL Server within a Docker container. Two versions are currently supported -- 10 and 11.
+This set of scripts launches PostgreSQL Server within a Docker container. Two versions are currently supported -- 10
+and 11.
 
-Building a custom script
-------------------------
+## Building a custom script
 
-The functions that launch the container are contained in `base`. This file can also be sourced in a custom script, along with variable overrides to alter the functionality.
+The functions that launch the container are contained in `base`. This file can also be sourced in a custom script, along
+with variable overrides to alter the functionality.
 
 ### Variables
 
 The following variables are available:
 
 | Variable          | Purpose                                                                                                                 | Required or Default                  |
-|-------------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------|
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | `major_version`   | The major version of PostgreSQL to launch. Other variables will use this value to build defaults                        | **Required**                         |
 | `password_file`   | The file that contains the password for the `postgres` user                                                             | `.postgres_password`                 |
 | `volume_name`     | The name of the Docker volume to mount as the PostgreSQL data directory                                                 | `postgres_data`                      |
