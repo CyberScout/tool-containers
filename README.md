@@ -2,6 +2,14 @@
 
 This repository contains scripts and other resources for using Docker containers to run various development tools.
 
+## Getting Started
+
+To begin, you'll obviously need to have a Docker runtime on your development machine. Follow the instructions for
+[macOS](https://docs.docker.com/docker-for-mac/install/) or
+[Windows](https://docs.docker.com/docker-for-windows/install/), as appropriate.
+
+Once Docker is running on your machine, follow the specific instructions in the README of each tool directory.
+
 ## (macOS) Creating Applications
 
 On macOS, you can use [Platypus](https://sveinbjorn.org/platypus) to create wrappers around the scripts that can be
