@@ -5,6 +5,28 @@
 This set of scripts launches PostgreSQL Server within a Docker container. Two versions are currently supported -- 10
 and 11.
 
+## Running a PostgreSQL server
+
+To run one of the existing Postgres versions, open a terminal and navigate to the location of the script. The examples
+below will run PostgreSQL 10.
+
+```
+~/src/tool-containers/postgres$ touch .postgres_password
+~/src/tool-containers/postgres$ vim .postgres_password
+# ... or whatever text editor you prefer
+~/src/tool-containers/postgres$ ./postgresql-10-server
+```
+
+(If you receive "permission denied" errors, ensure that the script has the executable bit set.)
+
+The script will:
+
+- Download the current Docker image (if needed)
+- Create the persistent storage volume (if needed)
+- Start a new container or run an existing one
+
+The `postgres` user will have the password specified in the `.postgres_password` file.
+
 ## Building a custom script
 
 The functions that launch the container are contained in `base`. This file can also be sourced in a custom script, along

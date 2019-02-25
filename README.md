@@ -10,6 +10,32 @@ To begin, you'll obviously need to have a Docker runtime on your development mac
 
 Once Docker is running on your machine, follow the specific instructions in the README of each tool directory.
 
+## Running Containers
+
+Each tool has one or more shell scripts in its respective directory that will start the container. See the README files
+in each subdirectory for details on running that tool.
+
+Make sure that each script is executable (attribute should be set properly with Git).
+
+Each script will pull the corresponding Docker image the first time it is used, but subsequent runs will use the
+existing image. To update, you will need to use Docker to manually pull a fresh version of the image:
+
+```
+$ docker images
+# OR
+$ docker images <REPOSITORY>
+$ docker pull <REPOSITORY>:<TAG>
+```
+
+For instance...
+
+```
+$ docker images postgres
+$ docker pull postgres:11-alpine
+```
+
+... will display the installed images from the `docker` repository and install the latest `11-alpine` version.
+
 ## (macOS) Creating Applications
 
 On macOS, you can use [Platypus](https://sveinbjorn.org/platypus) to create wrappers around the scripts that can be

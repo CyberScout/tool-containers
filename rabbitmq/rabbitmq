@@ -1,5 +1,27 @@
 #!/bin/bash
 
+container_name=rabbitmq_server
+hostname=local-rabbit
+rabbit_port=5672
+management_port=15672
 SCRIPTPATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-docker run -d --hostname local-rabbit --name rabbitmq_server -v $SCRIPTPATH/enabled_plugins:/etc/rabbitmq/enabled_plugins -p 127.0.0.1:15672:15672 -p 127.0.0.1:5672:5672 rabbitmq:3-management-alpine
+function run_container() {
+  echo Docker container "$container_name" not found. Running...
+  docker run -d --hostname $hostname --name $container_name -v $SCRIPTPATH/enabled_plugins:/etc/rabbitmq/enabled_plugins -p 127.0.0.1:$management_port:15672 -p 127.0.0.1:$rabbit_port:5672 rabbitmq:3-management-alpine
+}
+
+function start_container() {
+  echo Starting...
+  docker start $container_name
+}
+
+container_id=$(docker ps --all --filter "name=$container_name" --format "{{.ID}}")
+if [ -z "$container_id" ]
+then
+  run_container
+else
+  start_container
+fi
+echo RabbitMQ listening on port $rabbit_port
+echo Management interface available on $management_port

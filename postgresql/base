@@ -46,4 +46,5 @@ function do_it() {
     else
       start_container
     fi
+    echo PostgreSQL listening on port $local_port
 }
