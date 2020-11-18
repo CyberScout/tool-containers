@@ -1,0 +1,43 @@
+#!/bin/bash
+
+image_name=redis:6-alpine
+server_container=redis_server
+hostname=local-redis
+redis_port=6379
+
+me=$(basename "$0")
+
+function run_cli() {
+  docker run -it --link $server_container:redis --rm $image_name redis-cli -h redis -p $redis_port
+}
+
+function run_container() {
+  echo Docker container "$server_container" not found. Running...
+  docker run -d --hostname $hostname --name $server_container -p 127.0.0.1:$redis_port:$redis_port $image_name
+}
+
+function start_container() {
+  echo Starting...
+  docker start $server_container
+}
+
+function run_server() {
+  container_id=$(docker ps --all --filter "name=$server_container" --format "{{.ID}}")
+  if [ -z "$container_id" ]
+  then
+    run_container
+  else
+    start_container
+  fi
+  echo Redis listening on port $redis_port
+}
+
+case $me in
+  redis-cli)
+    run_cli
+    ;;
+  *)
+    run_server
+    ;;
+esac
+
